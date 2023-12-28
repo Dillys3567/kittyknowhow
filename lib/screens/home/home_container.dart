@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kittyknowhow/screens/home/home_page.dart';
 import 'package:kittyknowhow/screens/profile/profile_page.dart';
 import 'package:kittyknowhow/screens/post/post_create_page.dart';
+import 'package:kittyknowhow/utils/constants.dart';
 
 class HomeContainer extends StatefulWidget {
   const HomeContainer({super.key});
@@ -19,13 +20,17 @@ class _HomeContainerState extends State<HomeContainer> {
       backgroundColor: Color(-2507562),
       body: pages[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        unselectedItemColor: Color(-2507562),
+        selectedLabelStyle: smallSignUpText,
+        unselectedLabelStyle: smallSignUpText,
+        iconSize: 26,
         currentIndex: currentIndex,
         onTap: (index) {
           setState(() {
             currentIndex = index;
           });
         },
-        backgroundColor: Color(-1514516),
+        backgroundColor: Colors.white,
         items: [
           BottomNavigationBarItem(
               label: 'Home',

@@ -13,6 +13,12 @@ TextStyle signupButtonText = TextStyle(
     fontSize: 30,
     color: Color(-6656375));
 
+TextStyle profileNameText = TextStyle(
+    fontFamily: 'IndieFlower',
+    fontWeight: FontWeight.w900,
+    fontSize: 30,
+    color: Colors.white);
+
 TextStyle appBarText = TextStyle(
     fontFamily: 'IndieFlower',
     fontWeight: FontWeight.w900,
