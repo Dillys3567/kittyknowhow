@@ -3,10 +3,11 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:kittyknowhow/components/custom_signup_button.dart';
 import 'package:kittyknowhow/components/form_input_field.dart';
-import 'package:kittyknowhow/functions%20and%20apis/add_pet.dart';
+import 'package:kittyknowhow/functions%20and%20apis/pet.dart';
 import 'package:kittyknowhow/screens/home/home_container.dart';
 import 'package:kittyknowhow/utils/constants.dart';
 import 'package:kittyknowhow/models/pet.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -32,6 +33,7 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _isLoading = false;
 
   Future<void> _signUp() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     final isValid = _userFormKey.currentState!.validate();
     if (!isValid) {
       return;
@@ -52,6 +54,7 @@ class _SignUpPageState extends State<SignUpPage> {
       for (Pet pet in pets) {
         await addPet(user_id, pet.petName, pet.breed, pet.age);
       }
+      sharedPreferences.setString('name', name);
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return HomeContainer();
       }));

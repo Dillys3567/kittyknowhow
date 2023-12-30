@@ -31,16 +31,30 @@ class _PostCreatePageState extends State<PostCreatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        backgroundColor: Color(-6656375),
-        onPressed: () {},
-        child: Icon(
+      persistentFooterButtons: [
+        Icon(
           Icons.image,
-          color: Colors.white,
+          color: Color(-6656375),
           size: 35,
-        ),
-      ),
+          shadows: [
+            Shadow(color: Colors.black38, offset: Offset(5, 5), blurRadius: 50)
+          ],
+        )
+      ],
+      persistentFooterAlignment: AlignmentDirectional.bottomStart,
+      floatingActionButton: FloatingActionButton(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Color(-6656375),
+          onPressed: () {},
+          child: Text(
+            'Post',
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'IndieFlower',
+                fontWeight: FontWeight.w900,
+                fontSize: 20),
+          )),
       backgroundColor: Color(-2507562),
       body: SafeArea(
         child: SingleChildScrollView(

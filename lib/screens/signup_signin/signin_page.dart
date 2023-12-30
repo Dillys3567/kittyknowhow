@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kittyknowhow/components/custom_signup_button.dart';
 import 'package:kittyknowhow/components/form_input_field.dart';
+import 'package:kittyknowhow/functions%20and%20apis/user_info.dart';
 import 'package:kittyknowhow/screens/home/home_container.dart';
 import 'package:kittyknowhow/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignInPage extends StatefulWidget {
@@ -19,12 +21,14 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController _password = TextEditingController();
 
   Future<void> _signIn() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       _isLoading = true;
     });
     try {
       await supabase.auth
           .signInWithPassword(email: _email.text, password: _password.text);
+      sharedPreferences.setString('name', await getUsername());
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return HomeContainer();
       }));

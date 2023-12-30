@@ -3,6 +3,7 @@ import 'package:kittyknowhow/screens/home/home_container.dart';
 import 'package:kittyknowhow/screens/signup_signin/signup_page.dart';
 import 'package:kittyknowhow/screens/signup_signin/signup_signin.dart';
 import 'package:kittyknowhow/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
