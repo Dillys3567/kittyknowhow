@@ -28,7 +28,7 @@ class _PetCardState extends State<PetCard> {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
-          side: BorderSide(color: Color(-6656375), width: 5),
+          side: BorderSide(color: Color(-6656375), width: 1),
           borderRadius: BorderRadius.circular(15)),
       color: Colors.white,
       child: Column(

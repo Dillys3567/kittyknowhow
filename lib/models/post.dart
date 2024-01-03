@@ -1,14 +1,27 @@
-import 'package:flutter/material.dart';
-
 class Post {
-  String id;
+  String? id;
   String user_id;
   String title;
-  String image;
+  String? body;
+  String? image;
+  int? like;
 
   Post(
-      {required this.id,
+      {this.id,
       required this.user_id,
       required this.title,
-      required this.image});
+      this.image,
+      this.body,
+      this.like});
+
+  factory Post.fromJson(Map<String, dynamic> json) {
+    return Post(
+      id: json['id'],
+      user_id: json['user_id'],
+      title: json['title'],
+      body: json['body'] ?? '',
+      image: json['image'] ?? '',
+      like: json['like'],
+    );
+  }
 }

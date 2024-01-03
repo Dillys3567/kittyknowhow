@@ -198,14 +198,24 @@ class _ProfilePageState extends State<ProfilePage>
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    userName,
-                    softWrap: true,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'IndieFlower',
-                        fontWeight: FontWeight.w900,
-                        fontSize: 30),
+                  Card(
+                    elevation: 6,
+                    color: Color(-6656375),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: BorderSide(color: Colors.white)),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(5, 1, 5, 1),
+                      child: Text(
+                        userName,
+                        softWrap: true,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'IndieFlower',
+                            fontWeight: FontWeight.w900,
+                            fontSize: 30),
+                      ),
+                    ),
                   ),
                 ],
               ),
