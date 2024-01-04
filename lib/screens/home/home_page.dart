@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kittyknowhow/components/post_card.dart';
 import 'package:kittyknowhow/models/post_viewmodel.dart';
 import 'package:kittyknowhow/utils/constants.dart';
 import 'package:provider/provider.dart';
@@ -28,54 +29,15 @@ class _HomePageState extends State<HomePage> {
           child: ListView.builder(
               itemCount: 2,
               itemBuilder: (context, index) {
-                return Card(
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Color(-6656375), width: 1),
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Posted by Poster',
-                                style: smallSignUpText,
-                              ),
-                              Text(
-                                'Is catnip safe?',
-                                style: signupButtonText,
-                              ),
-                            ],
-                          ),
-                        ),
-                        (true)
-                            ? Card(
-                                child: Image.asset(
-                                  'assets/images/pawprint.png',
-                                ),
-                                elevation: 6,
-                              )
-                            : Container(),
-                        Row(
-                          children: [
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.favorite_border_rounded)),
-                            Text('0'),
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.messenger_outline_rounded)),
-                            Text('0'),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                );
+                return PostCard(
+                    owner_name: 'owner',
+                    title: 'Is cat nip safe?',
+                    body:
+                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ac urna vitae mauris sodales rhoncus. Vestibulum accumsan lobortis libero a aliquam. Praesent feugiat metus ut euismod ornare.',
+                    likes: 0,
+                    comments: 0,
+                    image: 'assets/images/pawprint.png',
+                    hasImage: true);
               }),
         ));
   }

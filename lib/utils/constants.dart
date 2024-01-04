@@ -27,6 +27,12 @@ TextStyle signupButtonText = TextStyle(
     fontSize: 30,
     color: Color(-6656375));
 
+TextStyle postTitleText = TextStyle(
+    fontFamily: 'IndieFlower',
+    fontWeight: FontWeight.w900,
+    fontSize: 30,
+    color: Colors.black);
+
 TextStyle profileNameText = TextStyle(
     fontFamily: 'IndieFlower',
     fontWeight: FontWeight.w900,
@@ -44,6 +50,12 @@ TextStyle smallSignUpText = TextStyle(
     fontWeight: FontWeight.w900,
     fontSize: 18,
     color: Color(-6656375));
+
+TextStyle postText = TextStyle(
+    fontFamily: 'IndieFlower',
+    fontWeight: FontWeight.w900,
+    fontSize: 18,
+    color: Colors.black);
 
 final supabase = Supabase.instance.client;
 
