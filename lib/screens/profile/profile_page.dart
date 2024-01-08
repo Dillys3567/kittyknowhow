@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kittyknowhow/components/form_input_field.dart';
 import 'package:kittyknowhow/components/pet_card.dart';
+import 'package:kittyknowhow/components/post_card.dart';
 import 'package:kittyknowhow/functions%20and%20apis/pet.dart';
+import 'package:kittyknowhow/functions%20and%20apis/posts_api.dart';
 import 'package:kittyknowhow/models/pet.dart';
+import 'package:kittyknowhow/screens/comment/comment_page.dart';
 import 'package:kittyknowhow/screens/settings/settings_page.dart';
 import 'package:kittyknowhow/utils/constants.dart';
 import 'package:lottie/lottie.dart';
@@ -25,14 +28,8 @@ class _ProfilePageState extends State<ProfilePage>
   String userName = "";
   String currentPetId = "";
   List<Pet> pets = [];
-
-  @override
-  void initState() {
-    super.initState();
-    tabController = TabController(length: 2, vsync: this);
-    getProfileInfo();
-    getPetInfo();
-  }
+  List posts = [];
+  PostsApiService postsApiService = PostsApiService();
 
   getProfileInfo() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -184,6 +181,27 @@ class _ProfilePageState extends State<ProfilePage>
     }
   }
 
+  Future getMyPosts() async {
+    try {
+      var response =
+          await postsApiService.getMyPosts(supabase.auth.currentUser!.id);
+      setState(() {
+        posts = response;
+      });
+    } catch (e) {
+      context.showErrorSnackBar(message: 'Could not load posts');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 2, vsync: this);
+    getProfileInfo();
+    getPetInfo();
+    getMyPosts();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -275,11 +293,34 @@ class _ProfilePageState extends State<ProfilePage>
                             pictureCallback: () => upload(e.petId ?? ""),
                           );
                         }).toList())),
-                        SingleChildScrollView(
-                          child: Column(
-                            children: [Text('posts')],
-                          ),
-                        ),
+                        (posts.isEmpty)
+                            ? Center(
+                                child:
+                                    Lottie.asset('assets/animations/cat.json'))
+                            : ListView.builder(
+                                itemCount: posts.length,
+                                itemBuilder: (context, index) {
+                                  return PostCard(
+                                    isCommentScreen: false,
+                                    ownerName: posts[index].userName,
+                                    title: posts[index].title,
+                                    body: posts[index].body ?? '',
+                                    comments: posts[index].comment ?? 0,
+                                    image: posts[index].image,
+                                    hasImage: (posts[index].image == '')
+                                        ? false
+                                        : true,
+                                    buttonDisabled: false,
+                                    commentWidget: CommentPage(
+                                      userName: posts[index].userName,
+                                      title: posts[index].title,
+                                      image: posts[index].image,
+                                      body: posts[index].body ?? '',
+                                      comments: posts[index].comment ?? 0,
+                                      postId: posts[index].id,
+                                    ),
+                                  );
+                                }),
                       ],
                       controller: tabController,
                     ))

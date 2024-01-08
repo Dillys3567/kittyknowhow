@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:kittyknowhow/screens/comment/comment_page.dart';
 import 'package:kittyknowhow/utils/constants.dart';
 
 class PostCard extends StatefulWidget {
-  final String owner_name;
+  final String ownerName;
   final String title;
   final String body;
   final String image;
-  final int likes;
   final int comments;
   final bool hasImage;
+  final bool buttonDisabled;
+  final bool isCommentScreen;
+  final Widget commentWidget;
   const PostCard(
       {super.key,
-      required this.owner_name,
+      required this.ownerName,
       required this.title,
+      required this.buttonDisabled,
       this.image = '',
       this.body = '',
-      required this.likes,
       required this.comments,
-      required this.hasImage});
+      required this.hasImage,
+      required this.isCommentScreen,
+      required this.commentWidget});
 
   @override
   State<PostCard> createState() => _PostCardState();
@@ -40,7 +45,7 @@ class _PostCardState extends State<PostCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Posted by ${widget.owner_name}',
+                    'Posted by ${widget.ownerName}',
                     style: postText,
                   ),
                   Text(
@@ -52,28 +57,40 @@ class _PostCardState extends State<PostCard> {
             ),
             (widget.hasImage)
                 ? Card(
-                    child: Image.asset(
-                      widget.image,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: FadeInImage.assetNetwork(
+                          width: MediaQuery.of(context).size.width * 0.88,
+                          height: MediaQuery.of(context).size.width * 0.88,
+                          placeholder: 'assets/images/pawprint.png',
+                          fit: BoxFit.fitHeight,
+                          image: widget.image),
                     ),
                     elevation: 6,
                   )
                 : Container(),
-            Text(
-              widget.body,
-              style: postText,
-            ),
-            Row(
-              children: [
-                IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.favorite_border_rounded)),
-                Text('${widget.likes}'),
-                IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.messenger_outline_rounded)),
-                Text('${widget.comments}'),
-              ],
-            )
+            (widget.body == '')
+                ? Container()
+                : Text(
+                    widget.body,
+                    style: postText,
+                  ),
+            (widget.isCommentScreen)
+                ? Container()
+                : Row(
+                    children: [
+                      IconButton(
+                          onPressed: (widget.buttonDisabled)
+                              ? null
+                              : () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          widget.commentWidget)),
+                          icon: Icon(Icons.messenger_outline_rounded)),
+                      Text('${widget.comments}'),
+                    ],
+                  )
           ],
         ),
       ),

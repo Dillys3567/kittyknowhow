@@ -20,7 +20,8 @@ class _PostCreatePageState extends State<PostCreatePage> {
   final _formKey = GlobalKey<FormState>();
   late FocusNode _focusNode;
   late XFile? chosenImageXFile;
-  late String? imageUrl;
+  String imageUrl = '';
+  bool imagePicked = false;
   TextEditingController title = TextEditingController();
   TextEditingController body = TextEditingController();
 
@@ -32,7 +33,7 @@ class _PostCreatePageState extends State<PostCreatePage> {
     PostsApiService postsApiService = PostsApiService();
     PostViewModel postViewModel =
         PostViewModel(postsApiService: postsApiService);
-    if (chosenImageXFile != null) {
+    if (imagePicked == true) {
       imageUrl = await upload(chosenImageXFile);
     }
     Post post = Post(
@@ -46,21 +47,12 @@ class _PostCreatePageState extends State<PostCreatePage> {
           supabase.auth.currentUser!.id, title.text, body.text, imageUrl);
       context.showSnackBar(message: 'Post created!');
       _formKey.currentState!.reset();
-      Navigator.pop(context);
     } catch (e) {
       context.showSnackBar(message: "Error creating post. Try again later.");
     }
   }
 
   Future<String> upload(XFile? imageFile) async {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            backgroundColor: Colors.transparent,
-            content: Lottie.asset('assets/animations/cat.json'),
-          );
-        });
     try {
       final bytes = await imageFile!.readAsBytes();
       final fileExt = imageFile.path.split('.').last;
@@ -87,7 +79,10 @@ class _PostCreatePageState extends State<PostCreatePage> {
       maxWidth: 400,
       maxHeight: 400,
     );
-    chosenImageXFile = imageFile;
+    setState(() {
+      chosenImageXFile = imageFile;
+      imagePicked = true;
+    });
   }
 
   @override

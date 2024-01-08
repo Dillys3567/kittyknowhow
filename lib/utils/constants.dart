@@ -42,8 +42,8 @@ TextStyle profileNameText = TextStyle(
 TextStyle appBarText = TextStyle(
     fontFamily: 'IndieFlower',
     fontWeight: FontWeight.w900,
-    fontSize: 50,
-    color: Color(-6656375));
+    fontSize: 30,
+    color: Colors.white);
 
 TextStyle smallSignUpText = TextStyle(
     fontFamily: 'IndieFlower',

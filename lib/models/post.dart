@@ -4,7 +4,8 @@ class Post {
   String title;
   String? body;
   String? image;
-  int? like;
+  String? userName;
+  int? comment;
 
   Post(
       {this.id,
@@ -12,16 +13,17 @@ class Post {
       required this.title,
       this.image,
       this.body,
-      this.like});
+      this.userName,
+      this.comment});
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-      id: json['id'],
-      user_id: json['user_id'],
-      title: json['title'],
-      body: json['body'] ?? '',
-      image: json['image'] ?? '',
-      like: json['like'],
-    );
+        id: json['id'],
+        user_id: json['user_id'],
+        title: json['title'],
+        comment: json['comment'] ?? 0,
+        body: json['body'] ?? '',
+        image: json['image'] ?? '',
+        userName: json['userName'] ?? '');
   }
 }
