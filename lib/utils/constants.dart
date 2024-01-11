@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 TextStyle homeHeadingText = TextStyle(
@@ -30,7 +31,7 @@ TextStyle signupButtonText = TextStyle(
 TextStyle postTitleText = TextStyle(
     fontFamily: 'IndieFlower',
     fontWeight: FontWeight.w900,
-    fontSize: 30,
+    fontSize: 22,
     color: Colors.black);
 
 TextStyle profileNameText = TextStyle(
@@ -53,7 +54,7 @@ TextStyle smallSignUpText = TextStyle(
 
 TextStyle postText = TextStyle(
     fontFamily: 'IndieFlower',
-    fontWeight: FontWeight.w900,
+    fontWeight: FontWeight.w600,
     fontSize: 18,
     color: Colors.black);
 
@@ -73,5 +74,17 @@ extension ShowSnackBar on BuildContext {
 
   void showErrorSnackBar({required String message}) {
     showSnackBar(message: message, backgroundColor: Colors.red);
+  }
+}
+
+extension AnimationProgressAlert on BuildContext {
+  void showAnimation() {
+    showDialog(
+        context: this,
+        builder: (builder) {
+          return AlertDialog(
+            content: Lottie.asset('assets/animations/cat.json'),
+          );
+        });
   }
 }

@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kittyknowhow/functions%20and%20apis/posts_api.dart';
+import 'package:kittyknowhow/functions_and_apis/posts_api.dart';
 import 'package:kittyknowhow/models/post.dart';
-import 'package:kittyknowhow/models/post_viewmodel.dart';
-import 'package:kittyknowhow/screens/home/home_container.dart';
-import 'package:kittyknowhow/screens/home/home_page.dart';
 import 'package:kittyknowhow/utils/constants.dart';
-import 'package:lottie/lottie.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PostCreatePage extends StatefulWidget {
@@ -31,8 +27,7 @@ class _PostCreatePageState extends State<PostCreatePage> {
     if (!isValid) return;
 
     PostsApiService postsApiService = PostsApiService();
-    PostViewModel postViewModel =
-        PostViewModel(postsApiService: postsApiService);
+
     if (imagePicked == true) {
       imageUrl = await upload(chosenImageXFile);
     }

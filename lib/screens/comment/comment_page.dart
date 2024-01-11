@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kittyknowhow/components/form_input_field.dart';
 import 'package:kittyknowhow/components/post_card.dart';
-import 'package:lottie/lottie.dart';
-import 'package:kittyknowhow/functions and apis/comments_apis.dart';
+import 'package:kittyknowhow/functions_and_apis/comments_apis.dart';
 import '../../utils/constants.dart';
 
 class CommentPage extends StatefulWidget {
@@ -33,8 +31,6 @@ class _CommentPageState extends State<CommentPage> {
   bool _isLoading = false;
   List comments = [];
 
-  List<Widget> commentCards = [];
-
   Future createNewComment() async {
     final isValid = _formKey.currentState!.validate();
     if (!isValid) return;
@@ -58,30 +54,12 @@ class _CommentPageState extends State<CommentPage> {
 
   Future getComments() async {
     try {
-      var response = await commentsApiService.getPostComments(widget.postId);
+      final response = await commentsApiService.getPostComments(widget.postId);
+      print(response);
       setState(() {
         comments = response;
-        print(comments);
       });
-      commentCards.clear();
-      comments.forEach((comment) {
-        commentCards.add(Padding(
-          padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-          child: ListTile(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            tileColor: Colors.white54,
-            title: Text(
-              comment['text'],
-              style: postText,
-            ),
-            subtitle: Text(comment['user_id']),
-          ),
-        ));
-      });
-    } catch (e) {
-      context.showErrorSnackBar(message: '${e}');
-    }
+    } catch (e) {}
   }
 
   @override
@@ -100,106 +78,92 @@ class _CommentPageState extends State<CommentPage> {
       body: Stack(
         children: [
           Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    PostCard(
-                      isCommentScreen: true,
-                      ownerName: widget.userName,
-                      title: widget.title,
-                      body: widget.body,
-                      image: widget.image,
-                      comments: widget.comments,
-                      hasImage: (widget.image.isEmpty) ? false : true,
-                      buttonDisabled: true,
-                      commentWidget: Container(),
-                    ),
-                    (comments.isEmpty)
-                        ? Text(
-                            'No comments yet',
-                            style: signupButtonText,
-                          )
-                        : Column(
-                            children: commentCards,
-                          )
-                  ],
-                ),
+              PostCard(
+                isCommentScreen: true,
+                ownerName: widget.userName,
+                title: widget.title,
+                body: widget.body,
+                image: widget.image,
+                comments: widget.comments,
+                hasImage: (widget.image.isEmpty) ? false : true,
+                buttonDisabled: true,
+                commentWidget: Container(),
               ),
-              Form(
-                key: _formKey,
-                child: TextFormField(
-                  validator: (val) {
-                    if (val!.isEmpty || val == null)
-                      return 'Submit valid comment';
-                    else
-                      return null;
-                  },
-                  controller: _comment,
-                  decoration: InputDecoration(
-                    suffixIcon: (_isLoading)
-                        ? Icon(Icons.data_saver_off_rounded)
-                        : IconButton(
-                            onPressed: () => createNewComment(),
-                            icon: Icon(
-                              Icons.send,
-                              color: Color(-6656375),
-                            ),
+              Expanded(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: comments.length,
+                    itemBuilder: (content, index) {
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 8, 8, 3),
+                        child: ListTile(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          tileColor: Colors.white54,
+                          title: Text(
+                            comments[index].text,
+                            style: postText,
                           ),
-                    hintText: 'Add a comment',
-                    hintStyle: smallSignUpText,
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(-6656375), width: 1),
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(25),
-                            topLeft: Radius.circular(25))),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(-6656375), width: 1),
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(25),
-                            topLeft: Radius.circular(25))),
-                  ),
-                ),
+                          subtitle: Text('By ${comments[index].userName}'),
+                        ),
+                      );
+                    }),
+              ),
+              SizedBox(
+                height: 68,
               )
             ],
           ),
+          (supabase.auth.currentSession == null)
+              ? Container()
+              : Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Form(
+                      key: _formKey,
+                      child: TextFormField(
+                        validator: (val) {
+                          if (val!.isEmpty || val == null)
+                            return 'Submit valid comment';
+                          else
+                            return null;
+                        },
+                        controller: _comment,
+                        decoration: InputDecoration(
+                          suffixIcon: (_isLoading)
+                              ? SizedBox(
+                                  height: 1,
+                                  width: 1,
+                                  child: Center(
+                                      child: CircularProgressIndicator()))
+                              : IconButton(
+                                  onPressed: () => createNewComment(),
+                                  icon: Icon(
+                                    Icons.send,
+                                    color: Color(-6656375),
+                                  ),
+                                ),
+                          hintText: 'Add a comment',
+                          hintStyle: smallSignUpText,
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Color(-6656375), width: 1),
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(25),
+                                  topLeft: Radius.circular(25))),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Color(-6656375), width: 1),
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(25),
+                                  topLeft: Radius.circular(25))),
+                        ),
+                      )),
+                )
         ],
       ),
     );
   }
 }
-
-// Card(
-// color: Colors.white,
-// shape: RoundedRectangleBorder(
-// side: BorderSide(color: Color(-6656375), width: 1),
-// borderRadius: BorderRadius.circular(15)),
-// child: Padding(
-// padding: const EdgeInsets.all(8.0),
-// child: Column(
-// children: [
-// Container(
-// width: double.infinity,
-// child: Column(
-// crossAxisAlignment: CrossAxisAlignment.start,
-// children: [
-// Text(
-// 'Posted by ${comment['user_id']}',
-// style: postText,
-// ),
-// Text(
-// comment['text'],
-// style: postText,
-// ),
-// ],
-// ),
-// ),
-// ],
-// ),
-// ),
-// )

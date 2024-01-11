@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kittyknowhow/screens/comment/comment_page.dart';
 import 'package:kittyknowhow/utils/constants.dart';
 
 class PostCard extends StatefulWidget {

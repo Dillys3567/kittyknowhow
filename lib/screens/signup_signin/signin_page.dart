@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kittyknowhow/components/custom_signup_button.dart';
 import 'package:kittyknowhow/components/form_input_field.dart';
-import 'package:kittyknowhow/functions%20and%20apis/user_info.dart';
+import 'package:kittyknowhow/functions_and_apis/user_info.dart';
 import 'package:kittyknowhow/screens/home/home_container.dart';
 import 'package:kittyknowhow/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';

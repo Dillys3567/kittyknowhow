@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Like {
   String id;
   String post_id;

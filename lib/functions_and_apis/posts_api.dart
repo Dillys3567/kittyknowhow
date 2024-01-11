@@ -1,4 +1,4 @@
-import 'package:kittyknowhow/functions%20and%20apis/comments_apis.dart';
+import 'package:kittyknowhow/functions_and_apis/comments_apis.dart';
 import 'package:kittyknowhow/models/post.dart';
 
 import '../utils/constants.dart';

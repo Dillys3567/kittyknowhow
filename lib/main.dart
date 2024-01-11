@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:kittyknowhow/functions%20and%20apis/posts_api.dart';
+import 'package:kittyknowhow/functions_and_apis/posts_api.dart';
 import 'package:kittyknowhow/models/post_viewmodel.dart';
-import 'package:kittyknowhow/screens/signup_signin/signin_page.dart';
-import 'package:kittyknowhow/screens/signup_signin/signup_page.dart';
-import 'package:kittyknowhow/screens/signup_signin/signup_signin.dart';
 import 'package:kittyknowhow/screens/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -23,7 +20,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(

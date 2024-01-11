@@ -1,13 +1,9 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:kittyknowhow/components/post_card.dart';
-import 'package:kittyknowhow/functions%20and%20apis/posts_api.dart';
-import 'package:kittyknowhow/models/post_viewmodel.dart';
+import 'package:kittyknowhow/functions_and_apis/posts_api.dart';
 import 'package:kittyknowhow/screens/comment/comment_page.dart';
 import 'package:kittyknowhow/utils/constants.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,14 +14,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List posts = [];
+  bool isLoading = false;
   PostsApiService postsApiService = PostsApiService();
 
   loadPosts() async {
-    var loadPosts = await postsApiService.getPosts();
     try {
+      var loadPosts = await postsApiService.getPosts();
       setState(() {
         posts = loadPosts;
-        print(posts);
+        isLoading = false;
       });
     } catch (e) {
       throw Exception(e);
@@ -53,10 +50,11 @@ class _HomePageState extends State<HomePage> {
         body: RefreshIndicator(
           onRefresh: () async {
             setState(() {
+              isLoading = true;
               loadPosts();
             });
           },
-          child: (posts.isEmpty)
+          child: (posts.isEmpty || isLoading)
               ? Center(child: Lottie.asset('assets/animations/cat.json'))
               : ListView.builder(
                   itemCount: posts.length,

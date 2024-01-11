@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kittyknowhow/functions%20and%20apis/posts_api.dart';
+import 'package:kittyknowhow/functions_and_apis/posts_api.dart';
 import 'package:kittyknowhow/models/post.dart';
 
 class PostViewModel extends ChangeNotifier {
