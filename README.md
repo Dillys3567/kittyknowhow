@@ -51,7 +51,11 @@ As the app connects people and their cats and allows post creation and commentin
 
 ## Acknowledgement
 -ALX staff - For the help, advice and resources they provided us with during this project and during all our curriculum.
+
 -Cohort 14 and all ALX students - For your friendship, invaluable support, and insight not only for this project, but over the last year.
+
 -KitKat - For being his cute and cuddly self and bringing me joy with his furry self
+
 -Sven - For encouraging me when I was struggling to fix bugs
+
 -YOU - For reading this documentation and testing out KittyKnowhow. I hope you enjoy it!
