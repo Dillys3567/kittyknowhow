@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kittyknowhow/utils/constants.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class PostCard extends StatefulWidget {
+  final String date;
   final String ownerName;
   final String title;
   final String body;
@@ -13,6 +15,7 @@ class PostCard extends StatefulWidget {
   final Widget commentWidget;
   const PostCard(
       {super.key,
+      required this.date,
       required this.ownerName,
       required this.title,
       required this.buttonDisabled,
@@ -77,17 +80,25 @@ class _PostCardState extends State<PostCard> {
             (widget.isCommentScreen)
                 ? Container()
                 : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      IconButton(
-                          onPressed: (widget.buttonDisabled)
-                              ? null
-                              : () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          widget.commentWidget)),
-                          icon: Icon(Icons.messenger_outline_rounded)),
-                      Text('${widget.comments}'),
+                      Row(
+                        children: [
+                          IconButton(
+                              onPressed: (widget.buttonDisabled)
+                                  ? null
+                                  : () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              widget.commentWidget)),
+                              icon: Icon(Icons.messenger_outline_rounded)),
+                          Text('${widget.comments}'),
+                        ],
+                      ),
+                      Text(
+                        '${timeago.format(DateTime.parse(widget.date), locale: 'en_short')}',
+                      )
                     ],
                   )
           ],

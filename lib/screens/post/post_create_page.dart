@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kittyknowhow/functions_and_apis/posts_api.dart';
-import 'package:kittyknowhow/models/post.dart';
 import 'package:kittyknowhow/utils/constants.dart';
+import 'package:lottie/lottie.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PostCreatePage extends StatefulWidget {
@@ -20,33 +20,41 @@ class _PostCreatePageState extends State<PostCreatePage> {
   bool imagePicked = false;
   TextEditingController title = TextEditingController();
   TextEditingController body = TextEditingController();
+  bool imageSelected = false;
+  bool isLoading = false;
 
   createNewPost() async {
     final isValid = _formKey.currentState!.validate();
-
+    //check if state is valid
     if (!isValid) return;
+    setState(() {
+      isLoading = true;
+    });
 
     PostsApiService postsApiService = PostsApiService();
 
+    //check if image has been picked and upload to supabase buckets
     if (imagePicked == true) {
       imageUrl = await upload(chosenImageXFile);
     }
-    Post post = Post(
-        user_id: supabase.auth.currentUser!.id,
-        title: title.text,
-        body: body.text,
-        image: imageUrl);
-
+    //upload new post
     try {
       await postsApiService.createPost(
           supabase.auth.currentUser!.id, title.text, body.text, imageUrl);
+      setState(() {
+        isLoading = false;
+        title.clear();
+        body.clear();
+        imageUrl = '';
+        imageSelected = false;
+      });
       context.showSnackBar(message: 'Post created!');
-      _formKey.currentState!.reset();
     } catch (e) {
       context.showSnackBar(message: "Error creating post. Try again later.");
     }
   }
 
+  //upload image using by creating file path from XFile format
   Future<String> upload(XFile? imageFile) async {
     try {
       final bytes = await imageFile!.readAsBytes();
@@ -67,6 +75,7 @@ class _PostCreatePageState extends State<PostCreatePage> {
     }
   }
 
+  //allow user to pick image from gallery
   Future<void> pickImage() async {
     final picker = ImagePicker();
     final imageFile = await picker.pickImage(
@@ -77,6 +86,7 @@ class _PostCreatePageState extends State<PostCreatePage> {
     setState(() {
       chosenImageXFile = imageFile;
       imagePicked = true;
+      imageSelected = true;
     });
   }
 
@@ -84,7 +94,7 @@ class _PostCreatePageState extends State<PostCreatePage> {
   void initState() {
     super.initState();
     _focusNode = FocusNode();
-    // Request focus when the page is loaded
+    // Request focus when the page is loaded for post title input
     Future.delayed(Duration.zero, () {
       FocusScope.of(context).requestFocus(_focusNode);
     });
@@ -98,78 +108,92 @@ class _PostCreatePageState extends State<PostCreatePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      persistentFooterButtons: [
-        IconButton(
-            onPressed: () => pickImage(),
-            icon: Icon(
-              Icons.image,
-              color: Color(-6656375),
-              size: 35,
-              shadows: [
-                Shadow(
-                    color: Colors.black38, offset: Offset(5, 5), blurRadius: 50)
-              ],
-            )),
-      ],
-      persistentFooterAlignment: AlignmentDirectional.bottomStart,
-      floatingActionButton: FloatingActionButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          backgroundColor: Color(-6656375),
-          onPressed: () => createNewPost(),
-          child: Text(
-            'Post',
-            style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'IndieFlower',
-                fontWeight: FontWeight.w900,
-                fontSize: 20),
-          )),
-      backgroundColor: Color(-2507562),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Center(
-              child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        style: inputText,
-                        controller: title,
-                        focusNode: _focusNode,
-                        decoration: InputDecoration(
-                          labelText: 'Title',
-                          labelStyle: signupButtonText,
-                          border: InputBorder.none,
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty || value == null) {
-                            return 'Please enter a title';
-                          } else if (value.length > 150) {
-                            return 'Title is too long';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      TextFormField(
-                        style: inputText,
-                        maxLines: null,
-                        controller: body,
-                        decoration: InputDecoration(
-                            labelText: 'Body text(optional)',
-                            labelStyle: signupButtonText,
-                            border: InputBorder.none),
-                      ),
+    return (isLoading)
+        ? Center(
+            child: Lottie.asset('assets/animations/cat.json'),
+          )
+        : Scaffold(
+            persistentFooterButtons: [
+              IconButton(
+                  iconSize: 35,
+                  color: Color(-6656375),
+                  isSelected: imageSelected,
+                  onPressed: () => pickImage(),
+                  selectedIcon: Icon(
+                    Icons.image_outlined,
+                    color: Colors.green,
+                  ),
+                  icon: Icon(
+                    Icons.image,
+                    color: Color(-6656375),
+                    shadows: [
+                      Shadow(
+                          color: Colors.black38,
+                          offset: Offset(5, 5),
+                          blurRadius: 50)
                     ],
                   )),
+            ],
+            persistentFooterAlignment: AlignmentDirectional.bottomStart,
+            floatingActionButton: FloatingActionButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                backgroundColor: Color(-6656375),
+                onPressed: () => createNewPost(),
+                child: Text(
+                  'Post',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'IndieFlower',
+                      fontWeight: FontWeight.w900,
+                      fontSize: 20),
+                )),
+            backgroundColor: Color(-2507562),
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Center(
+                    child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              textCapitalization: TextCapitalization.sentences,
+                              style: inputText,
+                              controller: title,
+                              focusNode: _focusNode,
+                              decoration: InputDecoration(
+                                labelText: 'Title',
+                                labelStyle: signupButtonText,
+                                border: InputBorder.none,
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty || value == null) {
+                                  return 'Please enter a title';
+                                } else if (value.length > 150) {
+                                  return 'Title is too long';
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+                            TextFormField(
+                              textCapitalization: TextCapitalization.sentences,
+                              style: inputText,
+                              maxLines: null,
+                              controller: body,
+                              decoration: InputDecoration(
+                                  labelText: 'Body text(optional)',
+                                  labelStyle: signupButtonText,
+                                  border: InputBorder.none),
+                            ),
+                          ],
+                        )),
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
   }
 }

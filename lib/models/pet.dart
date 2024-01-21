@@ -1,3 +1,4 @@
+//Pet object
 class Pet {
   String image;
   String? petId;
@@ -16,6 +17,7 @@ class Pet {
       this.bio = "",
       this.image = ''});
 
+  //returns new Pet object
   factory Pet.fromJson(Map<String, dynamic> json) {
     return Pet(
         image: json['image'],

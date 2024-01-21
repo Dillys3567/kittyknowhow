@@ -75,9 +75,6 @@ class _SignUpPageState extends State<SignUpPage> {
     }
     setState(() {
       pets.add(Pet(petName: petName.text, breed: breed.text, age: age.text));
-      pets.forEach((element) {
-        print(element);
-      });
       petName.clear();
       breed.clear();
       age.clear();

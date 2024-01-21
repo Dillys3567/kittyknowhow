@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/*
+Pet card for displaying pet information on profile screen
+ */
+
 class PetCard extends StatefulWidget {
   final String image;
   final String petName;
@@ -7,6 +11,7 @@ class PetCard extends StatefulWidget {
   final String petAge;
   final String bio;
   final callback;
+  //called when image is long pressed
   final pictureCallback;
   const PetCard({
     super.key,

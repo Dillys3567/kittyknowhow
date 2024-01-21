@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kittyknowhow/utils/constants.dart';
 
+//custom input field for sign up and sign in screen
+
 class FormInputField extends StatefulWidget {
   final String label;
   final TextEditingController controller;
@@ -28,6 +30,7 @@ class _FormInputFieldState extends State<FormInputField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textCapitalization: TextCapitalization.sentences,
       validator: widget.validator,
       obscureText: widget.obscureText ?? false,
       controller: widget.controller,

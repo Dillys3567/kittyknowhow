@@ -1,9 +1,11 @@
 import 'package:kittyknowhow/functions_and_apis/comments_apis.dart';
 import 'package:kittyknowhow/models/post.dart';
-
+import 'package:kittyknowhow/functions_and_apis/user_info.dart';
 import '../utils/constants.dart';
 
+//APIs for posts
 class PostsApiService {
+  //creates a new post
   Future createPost(
       String user_id, String title, String body, String? image) async {
     try {
@@ -14,6 +16,7 @@ class PostsApiService {
     }
   }
 
+  //gets all posts in database
   Future getPosts() async {
     CommentsApiService commentsApiService = CommentsApiService();
     try {
@@ -33,7 +36,6 @@ class PostsApiService {
           commentCount[y['post_id']] = 1;
         } else
           commentCount[y['post_id']] += 1;
-        print(commentCount);
       });
       List posts = response.map((e) {
         print(response2.map((x) {
@@ -41,6 +43,7 @@ class PostsApiService {
           return (x['name']);
         }));
         return Post(
+          date: e['created_at'],
           id: e['id'],
           user_id: e['user_id'],
           title: e['title'],
@@ -50,26 +53,13 @@ class PostsApiService {
           comment: commentCount[e['id']],
         );
       }).toList();
-      print(ids);
-      print(userNames);
-      print(response3);
-      print(commentCount);
       return (posts);
     } catch (e) {
       throw Exception(e);
     }
   }
 
-  Future getUserNameById(List userIds) async {
-    try {
-      final response =
-          await supabase.from('user').select('name,id').inFilter('id', userIds);
-      return response;
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
+  //gets the posts of a particular user
   Future getMyPosts(String userId) async {
     CommentsApiService commentsApiService = CommentsApiService();
     try {
@@ -90,7 +80,6 @@ class PostsApiService {
           commentCount[y['post_id']] = 1;
         } else
           commentCount[y['post_id']] += 1;
-        print(commentCount);
       });
       List posts = response.map((e) {
         print(response2.map((x) {
@@ -98,6 +87,7 @@ class PostsApiService {
           return (x['name']);
         }));
         return Post(
+          date: e['created_at'],
           id: e['id'],
           user_id: e['user_id'],
           title: e['title'],

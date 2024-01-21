@@ -20,6 +20,10 @@ class _SplashPageState extends State<SplashPage> {
   Future<void> _redirect() async {
     await Future.delayed(Duration.zero);
     final session = supabase.auth.currentSession;
+    /*
+    check if current session is null and route user to home page
+    or sign in page
+     */
     if (session == null) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return SignUpSignInPage();

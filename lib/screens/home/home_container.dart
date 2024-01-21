@@ -17,6 +17,10 @@ class _HomeContainerState extends State<HomeContainer> {
   List pages = [HomePage(), PostCreatePage(), ProfilePage()];
   @override
   Widget build(BuildContext context) {
+    /*
+    PopScope closes app if user is signed in and goes to sign up page
+    if user not signed in
+     */
     return PopScope(
       canPop: false,
       onPopInvoked: (bool didPop) {

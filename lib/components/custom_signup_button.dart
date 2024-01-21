@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kittyknowhow/utils/constants.dart';
 
+//custom button for use on sign up and sign in screen
+
 class CustomSignUpButton extends StatefulWidget {
   final String buttonText;
   final functionCall;

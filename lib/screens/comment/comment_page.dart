@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:kittyknowhow/components/post_card.dart';
 import 'package:kittyknowhow/functions_and_apis/comments_apis.dart';
 import '../../utils/constants.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class CommentPage extends StatefulWidget {
+  final String date;
   final String title;
   final String body;
   final String image;
@@ -12,6 +14,7 @@ class CommentPage extends StatefulWidget {
   final String postId;
   const CommentPage({
     super.key,
+    required this.date,
     required this.userName,
     required this.title,
     required this.image,
@@ -32,11 +35,13 @@ class _CommentPageState extends State<CommentPage> {
   List comments = [];
 
   Future createNewComment() async {
+    //check for form state
     final isValid = _formKey.currentState!.validate();
     if (!isValid) return;
     setState(() {
       _isLoading = true;
     });
+    //creates new comment if form is valid
     try {
       await commentsApiService.createComment(
           supabase.auth.currentUser!.id, _comment.text, widget.postId);
@@ -52,10 +57,10 @@ class _CommentPageState extends State<CommentPage> {
     }
   }
 
+  //gets all comments for a particular post using the post id
   Future getComments() async {
     try {
       final response = await commentsApiService.getPostComments(widget.postId);
-      print(response);
       setState(() {
         comments = response;
       });
@@ -80,6 +85,7 @@ class _CommentPageState extends State<CommentPage> {
           Column(
             children: [
               PostCard(
+                date: widget.date,
                 isCommentScreen: true,
                 ownerName: widget.userName,
                 title: widget.title,
@@ -105,7 +111,14 @@ class _CommentPageState extends State<CommentPage> {
                             comments[index].text,
                             style: postText,
                           ),
-                          subtitle: Text('By ${comments[index].userName}'),
+                          subtitle: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('By ${comments[index].userName}'),
+                              Text(
+                                  '${timeago.format(DateTime.parse(comments[index].date))}')
+                            ],
+                          ),
                         ),
                       );
                     }),
@@ -115,6 +128,9 @@ class _CommentPageState extends State<CommentPage> {
               )
             ],
           ),
+          /*
+          check if user is signed in and either display or hide the comment input field
+           */
           (supabase.auth.currentSession == null)
               ? Container()
               : Align(
@@ -122,6 +138,7 @@ class _CommentPageState extends State<CommentPage> {
                   child: Form(
                       key: _formKey,
                       child: TextFormField(
+                        textCapitalization: TextCapitalization.sentences,
                         validator: (val) {
                           if (val!.isEmpty || val == null)
                             return 'Submit valid comment';

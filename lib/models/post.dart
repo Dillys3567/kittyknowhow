@@ -1,4 +1,6 @@
+//Post object
 class Post {
+  String? date;
   String? id;
   String user_id;
   String title;
@@ -8,7 +10,8 @@ class Post {
   int? comment;
 
   Post(
-      {this.id,
+      {this.date,
+      this.id,
       required this.user_id,
       required this.title,
       this.image,
@@ -16,8 +19,10 @@ class Post {
       this.userName,
       this.comment});
 
+  //create new Post object from json object
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
+        date: json['date'],
         id: json['id'],
         user_id: json['user_id'],
         title: json['title'],

@@ -1,13 +1,18 @@
 import 'package:kittyknowhow/functions_and_apis/posts_api.dart';
+import 'package:kittyknowhow/functions_and_apis/user_info.dart';
 import 'package:kittyknowhow/models/comment.dart';
 import 'package:kittyknowhow/utils/constants.dart';
 
+//comment class containing function calls for comments
+
 class CommentsApiService {
+  //gets all comment ids for a particular post using the post id
   Future getAllComment() async {
     final response = await supabase.from('comment').select('post_id,id');
     return response;
   }
 
+  //creates a new comment
   Future createComment(String userId, String text, String postId) async {
     try {
       final response = await supabase
@@ -18,6 +23,7 @@ class CommentsApiService {
     }
   }
 
+  //gets all comments for a particular post
   Future getPostComments(String postId) async {
     var userNames = {};
     var ids = [];
@@ -32,7 +38,7 @@ class CommentsApiService {
         ids.add(element['user_id']);
       });
 
-      final response2 = await postsApiService.getUserNameById(ids);
+      final response2 = await getUserNameById(ids);
 
       response2.forEach((element) {
         userNames[element['id']] = element['name'];
@@ -40,6 +46,7 @@ class CommentsApiService {
 
       List<Comment> comments = response.map((e) {
         return Comment(
+            date: e['created_at'],
             id: e['id'],
             userId: e['user_id'],
             postId: postId,

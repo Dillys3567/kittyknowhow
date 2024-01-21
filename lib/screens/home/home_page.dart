@@ -61,6 +61,7 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (context, index) {
                     return PostCard(
                       isCommentScreen: false,
+                      date: posts[index].date,
                       ownerName: posts[index].userName,
                       title: posts[index].title,
                       body: posts[index].body ?? '',
@@ -69,6 +70,7 @@ class _HomePageState extends State<HomePage> {
                       hasImage: (posts[index].image == '') ? false : true,
                       buttonDisabled: false,
                       commentWidget: CommentPage(
+                        date: posts[index].date,
                         userName: posts[index].userName,
                         title: posts[index].title,
                         image: posts[index].image,

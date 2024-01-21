@@ -31,6 +31,7 @@ class _ProfilePageState extends State<ProfilePage>
   List posts = [];
   PostsApiService postsApiService = PostsApiService();
 
+  //gets user profile information
   getProfileInfo() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String name = await sharedPreferences.getString('name') ?? "";
@@ -39,6 +40,7 @@ class _ProfilePageState extends State<ProfilePage>
     });
   }
 
+  //gets info for pets of a user
   getPetInfo() async {
     getPets();
     List<Pet> petList = await getPets();
@@ -47,6 +49,7 @@ class _ProfilePageState extends State<ProfilePage>
     });
   }
 
+  //updates pet information
   updatePetProfile(String bio, String petId) async {
     final isValid = _formKey.currentState!.validate();
     if (!isValid) return;
@@ -67,6 +70,7 @@ class _ProfilePageState extends State<ProfilePage>
     Navigator.pop(context);
   }
 
+  //allow user to enter pet information
   editPetInfo(String petId) async {
     showDialog(
         context: context,
@@ -112,6 +116,7 @@ class _ProfilePageState extends State<ProfilePage>
         });
   }
 
+  //upload image for bet bio
   Future<void> upload(String petId) async {
     final picker = ImagePicker();
     final imageFile = await picker.pickImage(
@@ -181,6 +186,7 @@ class _ProfilePageState extends State<ProfilePage>
     }
   }
 
+  //get posts for particular user
   Future getMyPosts() async {
     try {
       var response =
@@ -282,7 +288,7 @@ class _ProfilePageState extends State<ProfilePage>
                             child: Column(
                                 children: pets.map((e) {
                           return PetCard(
-                            image: e.image,
+                            image: e.image ?? '',
                             petName: e.petName,
                             petBreed: e.breed,
                             petAge: e.age,
@@ -302,6 +308,7 @@ class _ProfilePageState extends State<ProfilePage>
                                 itemBuilder: (context, index) {
                                   return PostCard(
                                     isCommentScreen: false,
+                                    date: posts[index].date,
                                     ownerName: posts[index].userName,
                                     title: posts[index].title,
                                     body: posts[index].body ?? '',
@@ -312,6 +319,7 @@ class _ProfilePageState extends State<ProfilePage>
                                         : true,
                                     buttonDisabled: false,
                                     commentWidget: CommentPage(
+                                      date: posts[index].date,
                                       userName: posts[index].userName,
                                       title: posts[index].title,
                                       image: posts[index].image,
