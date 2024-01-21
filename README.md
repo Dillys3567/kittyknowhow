@@ -1,5 +1,6 @@
 # KittyKnowhow - Learn to care for your furbaby
-![KittyKnowhowlogo](https://github.com/Dillys3567/kittyknowhow/blob/main/assets/images/pawprint.png | width=1000)
+![KittyKnowhowlogo]( | width=1000)
+<img src="https://github.com/Dillys3567/kittyknowhow/blob/main/assets/images/pawprint.png" width="1000">
 
 ## Introduction
 
