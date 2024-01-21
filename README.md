@@ -1,6 +1,5 @@
 # KittyKnowhow - Learn to care for your furbaby
-![KittyKnowhowlogo]( | width=1000)
-<img src="https://github.com/Dillys3567/kittyknowhow/blob/main/assets/images/pawprint.png" width="1000">
+<img src="https://github.com/Dillys3567/kittyknowhow/blob/main/assets/images/pawprint.png" width="800" height="800">
 
 ## Introduction
 
@@ -15,17 +14,26 @@ Other features include: viewing posts without creating an account or signing in.
 This project is a Portfolio Project that marks the conclusion the Foundations Year at ALX. This was a solo project.
 
 ### Developer
-Dillys Naa Kai Annan [@DillysAnnan](https://twitter.com/DillysAnnan)
+Dillys Naa Kai Annan [@DillysAnnan](https://twitter.com/DillysAnnan) [Dillys Annan-linkedin](https://www.linkedin.com/in/dillys-annan-083b10211/)
 
 ### Blog Post
 After the development phase, I wrote a blog post to show the jorney to realising KittyKnowhow
 
 ### User Interface
+A little glimpse of the user interface
+
+<img src="https://github.com/Dillys3567/kittyknowhow/assets/80262558/68edaacc-27f9-4d50-973c-9f0cd9ee1632" width="300">
+<img src="https://github.com/Dillys3567/kittyknowhow/assets/80262558/f65cafcb-9929-4cfc-814c-668719bb62c8" width="300">
+<img src="https://github.com/Dillys3567/kittyknowhow/assets/80262558/28b083e1-f545-425c-8373-ead4045ea189" width="300">
+<img src="https://github.com/Dillys3567/kittyknowhow/assets/80262558/9d9a5f04-ae1a-451a-b70d-ff58e9d19bad" width="300">
+<img src="https://github.com/Dillys3567/kittyknowhow/assets/80262558/91eed1e4-30e0-4bbf-a67e-bb3c72490c8a" width="300">
 
 
 ## Architecture
 ### Overview
 The mobile app was built using Flutter framework. A lot of work was put into developing a front-end that was simple but easy to use. 
+
+<img src="" width="300">
 
 ### Flutter and Dart
 For this project, I decided to use a framework that was not taught in the foundations year to learn more about the framework. 
