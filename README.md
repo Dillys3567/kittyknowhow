@@ -19,6 +19,8 @@ Dillys Naa Kai Annan [@DillysAnnan](https://twitter.com/DillysAnnan) [Dillys Ann
 ### Blog Post
 After the development phase, I wrote a blog post to show the jorney to realising KittyKnowhow
 
+[KittyKnowhow: The journey](https://medium.com/@dillysannan/kittyknowhow-the-journey-b7cddcbb8453)
+
 ### User Interface
 A little glimpse of the user interface
 
@@ -33,7 +35,7 @@ A little glimpse of the user interface
 ### Overview
 The mobile app was built using Flutter framework. A lot of work was put into developing a front-end that was simple but easy to use. 
 
-<img src="" width="300">
+<img src="https://github.com/Dillys3567/kittyknowhow/assets/80262558/03d516a7-5dc7-4b94-bdcc-c8ae215576ee" width="800">
 
 ### Flutter and Dart
 For this project, I decided to use a framework that was not taught in the foundations year to learn more about the framework. 
