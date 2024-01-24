@@ -10,6 +10,7 @@ class PetCard extends StatefulWidget {
   final String petBreed;
   final String petAge;
   final String bio;
+  final bool isMyProfile;
   final callback;
   //called when image is long pressed
   final pictureCallback;
@@ -21,6 +22,7 @@ class PetCard extends StatefulWidget {
     required this.petAge,
     required this.callback,
     required this.pictureCallback,
+    required this.isMyProfile,
     this.bio = "",
   });
 
@@ -55,14 +57,16 @@ class _PetCardState extends State<PetCard> {
             ),
           ),
           ListTile(
-            trailing: IconButton(
-              onPressed: widget.callback,
-              icon: Icon(
-                Icons.edit,
-                color: Color(-6656375),
-                size: 25,
-              ),
-            ),
+            trailing: (widget.isMyProfile)
+                ? IconButton(
+                    onPressed: widget.callback,
+                    icon: Icon(
+                      Icons.edit,
+                      color: Color(-6656375),
+                      size: 25,
+                    ),
+                  )
+                : SizedBox.shrink(),
             title: Text(
               widget.petName,
               style: TextStyle(

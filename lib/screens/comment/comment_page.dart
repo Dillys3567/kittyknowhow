@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kittyknowhow/components/post_card.dart';
 import 'package:kittyknowhow/functions_and_apis/comments_apis.dart';
+import 'package:kittyknowhow/screens/profile/profile_page.dart';
 import '../../utils/constants.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -114,7 +115,16 @@ class _CommentPageState extends State<CommentPage> {
                           subtitle: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('By ${comments[index].userName}'),
+                              TextButton(
+                                onPressed: () => Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return ProfilePage(
+                                    userName: comments[index].userName,
+                                    userId: comments[index].userId,
+                                  );
+                                })),
+                                child: Text('By ${comments[index].userName}'),
+                              ),
                               Text(
                                   '${timeago.format(DateTime.parse(comments[index].date))}')
                             ],

@@ -12,8 +12,11 @@ class PostCard extends StatefulWidget {
   final bool hasImage;
   final bool buttonDisabled;
   final bool isCommentScreen;
+  final bool isMyPost;
   final Widget commentWidget;
-  const PostCard(
+  String? postId;
+  final deleteAction;
+  PostCard(
       {super.key,
       required this.date,
       required this.ownerName,
@@ -21,10 +24,13 @@ class PostCard extends StatefulWidget {
       required this.buttonDisabled,
       this.image = '',
       this.body = '',
+      this.isMyPost = false,
+      this.deleteAction,
       required this.comments,
       required this.hasImage,
       required this.isCommentScreen,
-      required this.commentWidget});
+      required this.commentWidget,
+      this.postId});
 
   @override
   State<PostCard> createState() => _PostCardState();
@@ -46,9 +52,19 @@ class _PostCardState extends State<PostCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Posted by ${widget.ownerName}',
-                    style: postText,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Posted by ${widget.ownerName}',
+                        style: postText,
+                      ),
+                      (widget.isMyPost)
+                          ? IconButton(
+                              onPressed: widget.deleteAction,
+                              icon: Icon(Icons.delete))
+                          : SizedBox.shrink()
+                    ],
                   ),
                   Text(
                     widget.title,
@@ -98,7 +114,7 @@ class _PostCardState extends State<PostCard> {
                       ),
                       Text(
                         '${timeago.format(DateTime.parse(widget.date), locale: 'en_short')}',
-                      )
+                      ),
                     ],
                   )
           ],

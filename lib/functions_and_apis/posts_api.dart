@@ -9,7 +9,7 @@ class PostsApiService {
   Future createPost(
       String user_id, String title, String body, String? image) async {
     try {
-      final response = await supabase.from('post').insert(
+      await supabase.from('post').insert(
           {'user_id': user_id, 'title': title, 'body': body, 'image': image});
     } catch (e) {
       throw Exception(e);
@@ -38,10 +38,9 @@ class PostsApiService {
           commentCount[y['post_id']] += 1;
       });
       List posts = response.map((e) {
-        print(response2.map((x) {
+        response2.forEach((x) {
           userNames[x['id']] = x['name'];
-          return (x['name']);
-        }));
+        });
         return Post(
           date: e['created_at'],
           id: e['id'],
@@ -82,10 +81,9 @@ class PostsApiService {
           commentCount[y['post_id']] += 1;
       });
       List posts = response.map((e) {
-        print(response2.map((x) {
+        response2.forEach((x) {
           userNames[x['id']] = x['name'];
-          return (x['name']);
-        }));
+        });
         return Post(
           date: e['created_at'],
           id: e['id'],
@@ -101,5 +99,9 @@ class PostsApiService {
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+  Future deletePosts(String id) async {
+    await supabase.from('post').delete().eq('id', id);
   }
 }

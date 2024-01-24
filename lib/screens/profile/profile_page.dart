@@ -14,7 +14,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  String? userName;
+  String? userId;
+  ProfilePage({super.key, this.userName, this.userId});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -42,8 +44,9 @@ class _ProfilePageState extends State<ProfilePage>
 
   //gets info for pets of a user
   getPetInfo() async {
-    getPets();
-    List<Pet> petList = await getPets();
+    List<Pet> petList = await getPets((widget.userId == null)
+        ? supabase.auth.currentUser!.id
+        : widget.userId!);
     setState(() {
       pets = petList;
     });
@@ -63,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage>
             content: Lottie.asset('assets/animations/cat.json'),
           );
         });
-    print(await updatePetBio(bio, petId));
+    await updatePetBio(bio, petId);
     setState(() {
       getPetInfo();
     });
@@ -189,8 +192,9 @@ class _ProfilePageState extends State<ProfilePage>
   //get posts for particular user
   Future getMyPosts() async {
     try {
-      var response =
-          await postsApiService.getMyPosts(supabase.auth.currentUser!.id);
+      var response = await postsApiService.getMyPosts((widget.userId == null)
+          ? supabase.auth.currentUser!.id
+          : widget.userId!);
       setState(() {
         posts = response;
       });
@@ -199,11 +203,48 @@ class _ProfilePageState extends State<ProfilePage>
     }
   }
 
+  Future deletePost(String id) async {
+    PostsApiService postsApiService = PostsApiService();
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              content: Text(
+                'Delete Post?',
+                style: smallSignUpText,
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () async {
+                      try {
+                        await postsApiService.deletePosts(id);
+                        context.showSnackBar(message: 'Post deleted');
+                        setState(() {
+                          getMyPosts();
+                        });
+                      } catch (e) {
+                        context.showErrorSnackBar(
+                            message: 'Could not delete message');
+                      } finally {
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Text('Yes')),
+                TextButton(
+                    onPressed: () => Navigator.pop(context), child: Text('No'))
+              ]);
+        });
+  }
+
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
-    getProfileInfo();
+    (widget.userName == null)
+        ? getProfileInfo()
+        : setState(() {
+            userName = widget.userName!;
+          });
     getPetInfo();
     getMyPosts();
   }
@@ -269,14 +310,18 @@ class _ProfilePageState extends State<ProfilePage>
                   )
                 ]),
             actions: [
-              IconButton(
-                  onPressed: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SettingsPage())),
-                  icon: Icon(
-                    Icons.menu_rounded,
-                    color: Colors.white,
-                    size: 35,
-                  ))
+              (widget.userId == null)
+                  ? IconButton(
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SettingsPage())),
+                      icon: Icon(
+                        Icons.menu_rounded,
+                        color: Colors.white,
+                        size: 35,
+                      ))
+                  : Container()
             ],
           ),
           SliverFillRemaining(
@@ -288,6 +333,7 @@ class _ProfilePageState extends State<ProfilePage>
                             child: Column(
                                 children: pets.map((e) {
                           return PetCard(
+                            isMyProfile: (widget.userId == null) ? true : false,
                             image: e.image ?? '',
                             petName: e.petName,
                             petBreed: e.breed,
@@ -307,7 +353,13 @@ class _ProfilePageState extends State<ProfilePage>
                                 itemCount: posts.length,
                                 itemBuilder: (context, index) {
                                   return PostCard(
+                                    deleteAction: () =>
+                                        deletePost(posts[index].id),
                                     isCommentScreen: false,
+                                    isMyPost: (widget.userName == null)
+                                        ? true
+                                        : false,
+                                    postId: posts[index].id,
                                     date: posts[index].date,
                                     ownerName: posts[index].userName,
                                     title: posts[index].title,

@@ -5,7 +5,7 @@ import 'package:kittyknowhow/utils/constants.dart';
 Future<void> addPet(
     dynamic user_id, String pet_name, String breed, String age) async {
   try {
-    final response = await supabase.from('pet').insert(
+    await supabase.from('pet').insert(
         {'user_id': user_id, 'pet_name': pet_name, 'breed': breed, 'age': age});
   } catch (error) {
     throw Exception(error);
@@ -13,11 +13,11 @@ Future<void> addPet(
 }
 
 //gets the pets of a particular user
-Future<List<Pet>> getPets() async {
+Future<List<Pet>> getPets(String id) async {
   final response = await supabase
       .from('pet')
       .select('*')
-      .eq('user_id', supabase.auth.currentUser!.id)
+      .eq('user_id', id)
       .order('created_at', ascending: true);
 
   //return list of pet objects
